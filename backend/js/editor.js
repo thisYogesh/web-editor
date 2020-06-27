@@ -1,10 +1,11 @@
+
 const { http, main, fs, util } = require("./modules")();
 const { Method } = require("../../js/enums");
 const unsuportedMsg = "This file has an unsuported text encoding";
-const indexHtml = require("./lolitor.html.js");
+const indexHtml = require("./index.html.js");
 const { logFileUpdate } = require('./log')
 
-function lolitor(port) {
+function server(port) {
   http
     .createServer(function(req, res) {
       const method = req.method;
@@ -186,4 +187,4 @@ function lolitor(port) {
     .listen(port);
 }
 
-module.exports = lolitor;
+module.exports = server;

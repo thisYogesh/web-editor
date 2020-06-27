@@ -1,13 +1,11 @@
 const { util } = require("./modules")();
 const { logInfo } = require('./log')
-// const lolhost = require('./lolhost')
-const lolitor = require('./lolitor')
+const editor = require('./editor')
 
-module.exports = function(port1 = 8000, port2 = 8001){
+module.exports = function(port1 = 8000){
   // initiate apps
-  // lolhost(port1) // static server
-  lolitor(port2) // code editor
+  editor(port1) // start editor server
 
   // print app server info
-  logInfo({ port1, port2, name: util.package.name, version: util.package.version })
+  logInfo({ port1, name: util.package.name, version: util.package.version })
 }

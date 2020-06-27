@@ -1,2 +1,2 @@
 const app = require("./dist/backend/bundle")
-app()
+module.exports = app

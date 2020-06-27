@@ -1,12 +1,12 @@
 {
   "name": "web-editor",
-  "version": "v1",
+  "version": "1.0.0",
   "scripts": {
-    "backend-dev": "cd backend && webpack --config webpack.config.js --watch --progress",
-    "frontend-dev": "cd frontend && webpack --config webpack.config.js --watch --progress",
+    "backend-dev": "cd backend && webpack --env.production=false --config webpack.config.js --watch --progress",
+    "frontend-dev": "cd frontend && webpack --env.production=false --config webpack.config.js --watch --progress",
     "backend-build": "cd backend && webpack --env.production",
     "frontend-build": "cd frontend && webpack --env.production",
-    "serve": "node index.js",
+    "serve": "node js/run.js",
     "build": "webpack"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
+    "colored-cli": "https://github.com/thisYogesh/colored-cli.git",
     "webpack-cli": "^3.3.11"
   }
 }

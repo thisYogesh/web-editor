@@ -1,10 +1,11 @@
-const { logger, printBox, color, colorType, effect } = require('./print')
+const { log, color, effect, colorType } = require('colored-cli')
+const printBox = require('./print')
 const icon = {
   success: '\u2714',
   fail: '\u2718'
 }
 
-function logInfo({ port1, port2, name, version }){
+function logInfo({ port1, name, version }){
   return ['',{
       values: [
           '    ',
@@ -36,31 +37,9 @@ function logInfo({ port1, port2, name, version }){
                   effect: effect.bold
               }
           },
-          'Server is live at ',
+          'Web Editor is live at ',
           {
               value: `http://localhost:${port1}`,
-              options: {
-                  type: colorType.fg,
-                  color1: color.cyan,
-                  effect: effect.underline
-              }
-          },
-          '    ',
-      ]
-  },{
-      values: [
-          '    ',
-          {
-              value: '\u2714 ',
-              options: {
-                  type: colorType.fg,
-                  color1: color.green,
-                  effect: effect.bold
-              }
-          },
-          'Editor is live at ',
-          {
-              value: `http://localhost:${port2}`,
               options: {
                   type: colorType.fg,
                   color1: color.cyan,
@@ -72,24 +51,9 @@ function logInfo({ port1, port2, name, version }){
   }, '']
 }
 
-function logFileUpdate(){
-  return [{
-    values: [{
-      value: '\u2714 ',
-      options: {
-        type: colorType.fg,
-        color1: color.green,
-        effect: effect.bold
-      }
-    },
-    'File updated successfully!'
-    ]
-  }]
-}
-
 module.exports = {
-  logInfo({port1, port2, name, version}){
-    const info = printBox(logInfo({port1, port2, name, version}))
+  logInfo({port1, name, version}){
+    const info = printBox(logInfo({port1, name, version}))
     console.log(info)
   },
 
@@ -122,7 +86,7 @@ module.exports = {
       colorCode = color.red
     }
 
-    const info = logger
+    const info = log
       .value(`${statusIcon} `)
       .color(colorType.fg, colorCode)
       .value(`(${name}) `)
@@ -131,7 +95,7 @@ module.exports = {
       .color(colorType.fg, color.cyan)
       .return()
 
-    const _path = logger
+    const _path = log
       .value(`\u279C ${path}\n`)
       .effect(effect.dim)
       .return()

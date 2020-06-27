@@ -1171,7 +1171,7 @@ Object.assign(lolitor.prototype, {
       el.addEventListener(event.replace('$', ''), events[event], capture)
     }
 
-    return this.setEvents
+    return this.setEvents.bind(this)
   }
 });
 

@@ -1,8 +1,8 @@
 module.exports = {
-    getBuildState({ production }) {
+    getBuildState(env) {
         return {
-            mode: production ? 'production' : 'development',
-            watch: !production
+            mode: env.production ? 'production' : 'development',
+            watch: !env.production
         }
     }
 }

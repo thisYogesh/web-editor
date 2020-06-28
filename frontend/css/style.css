@@ -310,7 +310,7 @@ body {
 }
 
 .app-status-item.--file-size:after {
-  content: '(on disk)';
+  content: '(ON DISK)';
   font-size: 11px;
   font-style: normal;
   margin-left: 2px;

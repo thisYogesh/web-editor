@@ -1,6 +1,13 @@
 const { log, color, colorType } = require('colored-cli')
 const { valueType } = require("../../js/enums");
-const { frame } = require("./unicodes");
+const frame = {
+  lt : '\u256D',
+  rt : '\u256E',
+  lb : '\u2570',
+  rb : '\u256F',
+  hl : '\u2500',
+  vl : '\u2502',
+}
 
 function charMultiplier(len, char) {
   let val = "";

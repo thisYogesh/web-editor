@@ -986,6 +986,7 @@ Object.assign(lolitor.prototype, {
      * Capture ON
      * This event make sure to open file in readonly mode
      * if file comes under restricted folders
+     * e.g. node_modules, .git
      */
     this.setEvents(listItem, {
       $click(e){
@@ -1126,7 +1127,7 @@ Object.assign(lolitor.prototype, {
     menu.classList.remove('--hide')
     this.setStyle(menu, {
       top: `${y - 10}px`,
-      left: `${x + 10}px`
+      left: `${x - 10}px`
     })
   }
 })

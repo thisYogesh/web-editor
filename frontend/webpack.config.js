@@ -28,7 +28,10 @@ module.exports = env => {
 
     plugins: [
       new CopyPlugin({
-        patterns: [{ from: "./ace-build", to: "./ace" }],
+        patterns: [
+          { from: "./ace-build", to: "./ace" },
+          { from: "./index.html", to: "./index.html" }
+        ],
         options: {
           concurrency: 100
         }

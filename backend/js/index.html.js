@@ -1,6 +1,9 @@
-const path = require('path')
-const { fs } = require("./modules")();
-const html = fs.readFileSync(path.resolve('frontend/index.html'), 'utf-8');
+const { fs, util } = require("./modules")();
+const { pathWithDir } = util.getPathInfo({
+  url: '/@app/dist/frontend/index.html',
+  dirname: __dirname
+})
+const html = fs.readFileSync(pathWithDir, 'utf-8');
 
 module.exports = function(title){
   return new Function(

@@ -1,0 +1,8 @@
+{
+  "name": "web-editor",
+  "version": "1.0.0",
+  "dependencies": {
+    "detect-character-encoding": "^0.8.0",
+    "colored-cli": "https://github.com/thisYogesh/colored-cli.git"
+  }
+}

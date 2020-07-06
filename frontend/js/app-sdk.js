@@ -4,14 +4,12 @@
 const { Method } = require('../../js/enums')
 const svgExt = require('./extIcons')
 const syntax = require('./syntaxMode')
+const { template, getTemplate } = require('./templates')
 const Bool = {
   TRUE: "true",
   FALSE: "false"
 }
-const template = {
-  ImageTemplate: 0,
-  FileUnsupportTemplate: 1
-}
+
 const rootPath = '/'
 const ROFolders = ['.git', 'node_modules']
 
@@ -32,6 +30,9 @@ Object.assign(lolitor.prototype, {
 
     // save some usefull elements reference in context
     this.initAppDomRef()
+
+    // show app intro
+    this.showAppIntro()
     
     // fetch initial view
     this.fetchRoot()
@@ -59,6 +60,7 @@ Object.assign(lolitor.prototype, {
       this.fetchDirectory(path, el)
     }else{
       this.openFile(path, el)
+      this.toggleAppIntro(false)
     }
   },
 
@@ -486,27 +488,7 @@ Object.assign(lolitor.prototype, {
 
 Object.assign(lolitor.prototype, {
   getTemplate(templ){
-    let templateFn
-    switch(templ){
-      case template.ImageTemplate:
-        templateFn = function(src){
-          return `<figure class="app-image-tab"><img src="${src}"/></figure>`
-        }
-        break;
-      
-      case template.FileUnsupportTemplate:
-        templateFn = function(message){
-          return `
-            <artical class="app-tab-nos">
-              <div class="__msg-wrapper">
-                <span class="__msg">This file has an unsuported text encoding...</span>
-              </div>
-            </artical>`
-        }
-        break;
-    }
-
-    return templateFn
+    return getTemplate(templ)
   },
 
   setTemplate(value, template, tabEl){
@@ -533,22 +515,35 @@ Object.assign(lolitor.prototype, {
     this._lastFocusedItem = el;
   },
   getTabElems(){
-    this.editorParent = this.editorParent || document.querySelector('#lol-editor')
     this.tabParent = this.tabParent || document.querySelector('.app-tab-wrapper')
 
     return {
-      editorParent: this.editorParent, 
+      editorParent: this._tabParent, 
       tabParent: this.tabParent
     }
+  },
+
+  createDOM(html, selector) {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = html
+
+    return wrapper.querySelector(selector)
   },
 
   initAppDomRef(){
     this._listRoot = document.querySelector(".app-list-wrapper.--root-wrapper");
     this.initStatusBar();
+
     this._appFilename = document.querySelector('.app-header-filename')
     this._appFooterStatus = document.querySelector('.app-status')
     this._confirmationBox = document.querySelector('.app-popup')
     this._contextMenu = document.querySelector('.app-context-menu')
+    this._tabParent = document.querySelector('#lol-editor')
+
+    // generate app intro
+    const templateFn = this.getTemplate(template.AppIntro)
+    const introEl = this.createDOM(templateFn(), '.app-intro')
+    this._appIntro = introEl
   },
 
   createList(items) {
@@ -830,14 +825,16 @@ Object.assign(lolitor.prototype, {
     createButtons.forEach(button => {
       const isCreateFile = button.classList.contains('--create-file')
       if(isCreateFile) this.setEvents(button, {
-        click(){
+        click(e){
           _this.createFile()
+          e.stopPropagation()
         }
       })
       
       else this.setEvents(button, {
-        click(){
+        click(e){
           _this.createFolder()
+          e.stopPropagation()
         }
       })
     })
@@ -894,6 +891,7 @@ Object.assign(lolitor.prototype, {
 
     this.setEvents(input, {
       blur(){
+        _this.stallFileExplorer(false)
         listItem.remove()
       },
       
@@ -902,6 +900,7 @@ Object.assign(lolitor.prototype, {
       }
     })
     
+    this.stallFileExplorer(true, true)
     this.addListItemMouseEv(listItem)
     input.focus()
   },
@@ -1053,6 +1052,17 @@ Object.assign(lolitor.prototype, {
     })
   },
 
+  showAppIntro(){
+    this._tabParent.append(this._appIntro)
+  },
+
+  toggleAppIntro(show){
+    const showIntro = show === undefined ? this.currentTab ? false : true : show
+
+    if(showIntro) this.showAppIntro()
+    else this._appIntro.remove()
+  },
+
   showTab(tabRef){
     // close previous tab if opened
     this.closeTab()
@@ -1076,6 +1086,7 @@ Object.assign(lolitor.prototype, {
     }
 
     this.updateBars()
+    this.toggleAppIntro()
   },
 
   setWindowEvents(){
@@ -1083,7 +1094,7 @@ Object.assign(lolitor.prototype, {
 
     this.setEvents(window, {
       click(){
-        _this._contextMenu.classList.add('--hide')
+        _this.removeContextMenu()
       },
 
       keydown(e){
@@ -1112,6 +1123,19 @@ Object.assign(lolitor.prototype, {
         e.stopPropagation()
       }
     })
+  },
+
+  stallFileExplorer(doStall = true, blur){
+    const listRoot = this._listRoot
+    if(doStall) {
+      const rootScroller = listRoot.querySelector(".app-list-wrapper");
+      const scrollTop = rootScroller.scrollTop;
+
+      listRoot.classList.add('--stall', blur ? '--blur' : null)
+      rootScroller.scrollTop = scrollTop;
+    } else {
+      listRoot.classList.remove('--stall', '--blur')
+    }
   }
 });
 
@@ -1120,17 +1144,24 @@ Object.assign(lolitor.prototype, {
  */
 
 Object.assign(lolitor.prototype, {
-  onContextMenu(e){
-    const {x, y} = e
-    const menu = this._contextMenu
+  onContextMenu(e) {
+    const { x, y } = e;
+    const menu = this._contextMenu;
 
-    menu.classList.remove('--hide')
+    menu.classList.remove("--hide");
     this.setStyle(menu, {
       top: `${y - 10}px`,
-      left: `${x - 10}px`
-    })
-  }
-})
+      left: `${x - 10}px`,
+    });
+
+    this.stallFileExplorer()
+  },
+
+  removeContextMenu() {
+    this._contextMenu.classList.add("--hide");
+    this.stallFileExplorer(false)
+  },
+});
 
 /**
  * Util

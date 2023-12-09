@@ -1,5 +1,5 @@
 const fs = require("fs");
-const detectEncoding = require("detect-character-encoding");
+const chardet = require("chardet");
 
 module.exports = {
   writeFile({path, encode = null}, data, cb){
@@ -18,7 +18,7 @@ module.exports = {
       this.readDir(path, encode, onDir);
     } else {
       this.readFile(path, encode, function(err, content){
-        const encoding = detectEncoding(content).encoding
+        const encoding = chardet.detect(Buffer.from(content))
         onFile && onFile(err, content, encoding)
       });
     }

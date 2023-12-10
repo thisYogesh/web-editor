@@ -1,5 +1,5 @@
 ## Demo
-<video src="https://thisyogesh.github.io/files/web-editor-demo.mp4"></video>
+[![Webitor demo](https://thisyogesh.github.io/files/webitor-code.png)](https://thisyogesh.github.io/files/web-editor-demo.mp4)
 
 ## To run on dev environment
 ```

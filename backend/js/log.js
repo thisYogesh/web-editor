@@ -18,7 +18,7 @@ function logInfo({ port1, name, version }){
               }
           },
           {
-              value: `${name} (${version})`,
+              value: `Webitor (${version})`,
               options: {
                   type: colorType.fg,
                   color1: color.blue,
@@ -37,7 +37,7 @@ function logInfo({ port1, name, version }){
                   effect: effect.bold
               }
           },
-          'Web Editor is live at ',
+          'Webitor is live at ',
           {
               value: `http://localhost:${port1}`,
               options: {

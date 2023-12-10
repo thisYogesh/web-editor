@@ -1,0 +1,1 @@
+yarn backend-build && yarn frontend-build && yarn serve

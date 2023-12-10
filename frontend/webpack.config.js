@@ -21,6 +21,10 @@ module.exports = env => {
       ignored: /ace-build/
     },
 
+    optimization: {
+      minimize: false
+    },
+
     devServer: {
       contentBase: "../dist/frontend",
       hot: true

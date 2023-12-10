@@ -10,6 +10,10 @@ module.exports = env => {
     
     entry: "./index.js",
 
+    optimization: {
+      minimize: false
+    },
+
     output: {
       libraryTarget: 'umd',
       path: path.resolve(__dirname, "../dist/backend"),

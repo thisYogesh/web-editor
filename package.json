@@ -7,6 +7,7 @@
     "backend-build": "cd backend && webpack --env.production",
     "frontend-build": "cd frontend && webpack --env.production",
     "serve": "node js/run.js",
+    "dev": "node dev-index.js",
     "build": "webpack"
   },
   "dependencies": {
